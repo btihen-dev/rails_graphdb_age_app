@@ -12,12 +12,19 @@
 # Configure Using Gemfile
 # gem "pg"
 #
+# schema_search_path: ag_catalog,age_schema,public
+
 default: &default
   adapter: postgresql
   encoding: unicode
+  username: postgresUser
+  password: postgresPW
+  host: localhost
+  port: 5455
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  schema_search_path: "ag_catalog,age_schema,public"
 
 development:
   <<: *default
@@ -42,7 +49,7 @@ development:
   #port: 5432
 
   # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
+  # schema_search_path: myapp,sharedapp,public
 
   # Minimum log levels, in increasing order:
   #   debug5, debug4, debug3, debug2, debug1,

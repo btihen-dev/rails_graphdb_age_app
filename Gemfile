@@ -63,3 +63,5 @@ group :development do
   # gem "spring"
 end
 
+gem "pry-rails"
+# gem "apache_age", path: '../apache_age'
