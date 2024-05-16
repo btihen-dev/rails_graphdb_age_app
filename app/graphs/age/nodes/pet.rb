@@ -1,4 +1,4 @@
-module AgeSchema
+module Age
   module Nodes
     class Pet
       include ApacheAge::Vertex

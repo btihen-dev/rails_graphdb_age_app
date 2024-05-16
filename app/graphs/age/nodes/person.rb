@@ -1,4 +1,4 @@
-module AgeSchema
+module Age
   module Nodes
     class Person
       include ApacheAge::Vertex

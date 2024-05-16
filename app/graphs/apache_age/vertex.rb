@@ -14,20 +14,13 @@ module ApacheAge
     end
 
     def age_type = 'vertex'
-    def to_h = base_to_h.symbolize_keys
-    def age_properties = base_properties.symbolize_keys
-    def age_hash = base_hash.with_indifferent_access
 
-    # for now only does a create
-    def save
-      return self if id.present?
-
-      response_hash = execute_sql
-      self.id = response_hash['id']
-
-      self
-    end
-
+    # AgeSchema::Nodes::Company.create(company_name: 'Bedrock Quarry')
+    # SELECT *
+    # FROM cypher('age_schema', $$
+    #     CREATE (company:Company {company_name: 'Bedrock Quarry'})
+    # RETURN company
+    # $$) as (Company agtype);
     def create_sql
       alias_name = age_alias || age_label.downcase
       <<-SQL

@@ -18,6 +18,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_05_183043) do
   enable_extension "age"
   enable_extension "plpgsql"
 
+# Could not dump table "_ag_label_edge" because of following StandardError
+#   Unknown type 'graphid' for column 'id'
+
+# Could not dump table "_ag_label_vertex" because of following StandardError
+#   Unknown type 'graphid' for column 'id'
+
 # Could not dump table "ag_graph" because of following StandardError
 #   Unknown type 'regnamespace' for column 'namespace'
 
