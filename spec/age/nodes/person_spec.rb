@@ -22,7 +22,7 @@ RSpec.describe Age::Nodes::Person do
       it '#save' do
         expect(subject.save).to be_truthy
         expect(subject.id).to be_present
-        # expect(subject).to be_persisted
+        expect(subject).to be_persisted
       end
     end
 
@@ -55,12 +55,14 @@ RSpec.describe Age::Nodes::Person do
     context 'when required attributes are not given' do
       let(:attributes) { {} }
 
-      it { expect(subject).not_to be_valid }
-      xit { expect(subject.errors.messages[:first_name]).to include 'must be present' }
-      xit { expect(subject.errors.messages[:nick_name]).to include 'must be present' }
-      xit { expect(subject.errors.messages[:last_name]).to include 'must be present' }
-      xit { expect(subject.errors.messages[:given_name]).to include 'must be present' }
-      xit { expect(subject.errors.messages[:gender]).to include 'must be present' }
+      it 'is not valid' do
+        expect(subject).not_to be_valid
+        expect(subject.errors.messages[:first_name]).to include "can't be blank"
+        expect(subject.errors.messages[:nick_name]).to include "can't be blank"
+        expect(subject.errors.messages[:last_name]).to include "can't be blank"
+        expect(subject.errors.messages[:given_name]).to include "can't be blank"
+        expect(subject.errors.messages[:gender]).to include "can't be blank"
+      end
     end
   end
 
@@ -79,7 +81,7 @@ RSpec.describe Age::Nodes::Person do
       end
 
       it { expect(subject.id).to be_present }
-      xit { expect(subject).to be_persisted }
+      it { expect(subject).to be_persisted }
     end
   end
 end

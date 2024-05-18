@@ -16,15 +16,17 @@ RSpec.describe Age::Nodes::Company do
       it '#save' do
         expect(subject.save).to be_truthy
         expect(subject.id).to be_present
-        # expect(subject).to be_persisted
+        expect(subject).to be_persisted
       end
     end
 
     context 'when required attributes are not given' do
       let(:attributes) { {} }
 
-      it { expect(subject).not_to be_valid }
-      xit { expect(subject.errors.messages[:company_name]).to include 'must be present' }
+      it 'is not valid' do
+        expect(subject).not_to be_valid
+        expect(subject.errors.messages[:company_name]).to include "can't be blank"
+      end
     end
   end
 
@@ -35,7 +37,7 @@ RSpec.describe Age::Nodes::Company do
       let(:attributes) { { company_name: 'Rockport Querry' } }
 
       it { expect(subject.id).to be_present }
-      xit { expect(subject).to be_persisted }
+      it { expect(subject).to be_persisted }
     end
   end
 end

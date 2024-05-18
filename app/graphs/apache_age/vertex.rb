@@ -1,7 +1,7 @@
 module ApacheAge
   module Vertex
     extend ActiveSupport::Concern
-    include ApacheAge::Entity
+    # include ApacheAge::Entity
 
     included do
       include ActiveModel::Model
@@ -11,6 +11,7 @@ module ApacheAge
       attribute :id, :integer
 
       extend ApacheAge::ClassMethods
+      include ApacheAge::CommonMethods
     end
 
     def age_type = 'vertex'

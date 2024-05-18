@@ -1,7 +1,6 @@
 module ApacheAge
   module Edge
     extend ActiveSupport::Concern
-    include ApacheAge::Entity
 
     included do
       include ActiveModel::Model
@@ -14,7 +13,10 @@ module ApacheAge
       attribute :end_node # :vertex
       attribute :start_node # :vertex
 
+      validates :end_node, :start_node, presence: true
+
       extend ApacheAge::ClassMethods
+      include ApacheAge::CommonMethods
     end
 
     def age_type = 'edge'
