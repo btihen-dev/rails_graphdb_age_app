@@ -1,45 +1,90 @@
 class AddAgeSetup < ActiveRecord::Migration[7.1]
-  def change
-    # allow age extension
+  def up
+    # Allow age extension
     execute('CREATE EXTENSION IF NOT EXISTS age;')
-    # load the age code
+
+    # Load the age code
     execute("LOAD 'age';")
-    # load the ag_catalog into the search path
+
+    # Load the ag_catalog into the search path
     execute('SET search_path = ag_catalog, "$user", public;')
 
-    # creates our AGE schema
-    # USE: `execute("SELECT create_graph('age_schema');")`, as we need to use: `create_graph`
-    # NOT: `ActiveRecord::Base.connection.create_schema('age_schema')`
+    # Create ag_catalog schema if it doesn't exist (should be done when extension is added)
+    execute <<-SQL
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1
+          FROM pg_namespace
+          WHERE nspname = 'ag_catalog'
+        ) THEN
+          CREATE SCHEMA ag_catalog;
+        END IF;
+      END $$;
+    SQL
+
+    # Add foreign key constraint if it doesn't exist (should be done when extension is added)
+    execute <<-SQL
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1
+          FROM pg_constraint
+          WHERE conname = 'fk_graph_oid'
+        ) THEN
+          ALTER TABLE ag_catalog.ag_label
+          ADD CONSTRAINT fk_graph_oid FOREIGN KEY (graph)
+          REFERENCES ag_catalog.ag_graph (graphid);
+        END IF;
+      END $$;
+    SQL
+    # execute <<-SQL
+    #   DO $$
+    #   BEGIN
+    #     IF NOT EXISTS (
+    #       SELECT 1
+    #       FROM pg_constraint
+    #       WHERE conname = 'fk_graph_oid'
+    #     ) THEN
+    #       ALTER TABLE ag_label ADD CONSTRAINT fk_graph_oid FOREIGN KEY (graph) REFERENCES ag_graph (graphid);
+    #     END IF;
+    #   END $$;
+    # SQL
+
+    # Create age_schema graph if it doesn't exist
     execute("SELECT create_graph('age_schema');")
-    # execute("SELECT create_graph('age_schema') IF NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'age_schema');")
+    # execute("SELECT * FROM ag_catalog.create_graph('graph_name');")
+    # execute <<-SQL
+    #   DO $$
+    #   BEGIN
+    #     IF NOT EXISTS (
+    #       SELECT 1
+    #       FROM ag_catalog.ag_graph
+    #       WHERE name = 'age_schema'
+    #     ) THEN
+    #       PERFORM create_graph('age_schema');
+    #     END IF;
+    #   END $$;
+    # SQL
+  end
 
-    # add_foreign_key(
-    #   'ag_catalog.ag_label', 'ag_catalog.ag_graph',
-    #   column: 'graph', primary_key: 'graphid',
-    #   name: 'fk_graph_oid', if_not_exists: true
-    # )
-    # add foreign key constraint to ag_catalog.ag_label table
-    # return if foreign_key_exists?('ag_catalog.ag_label', 'ag_catalog.ag_graph', column: 'graph', name: 'fk_graph_oid')
+  def down
+    execute <<-SQL
+      DO $$
+      BEGIN
+        IF EXISTS (
+          SELECT 1
+          FROM pg_constraint
+          WHERE conname = 'fk_graph_oid'
+        ) THEN
+          ALTER TABLE ag_catalog.ag_label
+          DROP CONSTRAINT fk_graph_oid;
+        END IF;
+      END $$;
+    SQL
 
-    # add_foreign_key(
-    #   'ag_catalog.ag_label', 'ag_catalog.ag_graph',
-    #   column: 'graph', primary_key: 'graphid', name: 'fk_graph_oid'
-    # )
-
-    # return if foreign_key_exists?('ag_catalog.ag_label', 'ag_catalog.ag_graph', column: 'graph', name: 'fk_graph_oid')
-    # add_foreign_key(
-    #   'ag_catalog.ag_label', 'ag_catalog.ag_graph',
-    #   column: 'graph', primary_key: 'graphid', name: 'fk_graph_oid'
-    # )
-    # drop the foreign key constraint if it exists
-    # if foreign_key_exists?('ag_catalog.ag_label', 'ag_catalog.ag_graph', column: 'graph', name: 'fk_graph_oid')
-    #   execute('ALTER TABLE ag_catalog.ag_label DROP CONSTRAINT fk_graph_oid;')
-    # end
-
-    # # add the foreign key constraint
-    # add_foreign_key(
-    #   'ag_catalog.ag_label', 'ag_catalog.ag_graph',
-    #   column: 'graph', primary_key: 'graphid', name: 'fk_graph_oid'
-    # )
+    execute("SELECT drop_graph('age_schema', true);")
+    execute('DROP SCHEMA IF EXISTS ag_catalog CASCADE;')
+    execute('DROP EXTENSION IF EXISTS age;')
   end
 end

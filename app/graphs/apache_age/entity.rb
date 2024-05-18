@@ -8,6 +8,13 @@ module ApacheAge
       self.start_id ||= start_node.id
     end
 
+    def persisted? = id.present?
+
+    # for now we just can just use one schema
+    def age_graph = 'age_schema'
+    def age_label = self.class.name.split('::').last
+    def to_s = ":#{age_label} #{properties_to_s}"
+
     def update(attribs)
       attribs.except(id:).each do |key, value|
         send("#{key}=", value) if respond_to?("#{key}=")
@@ -21,8 +28,9 @@ module ApacheAge
       if age_type == 'edge'
         self.end_id = response_hash['end_id']
         self.start_id = response_hash['start_id']
+        # reload the nodes?
         # self.end_node = Age::Nodes.find(end_id)
-        # self.start_node = find(start_id)
+        # self.start_node = Age::Nodes.find(start_id)
       end
 
       self
@@ -56,12 +64,6 @@ module ApacheAge
         "Age::Edges::#{hash['label']}".constantize.new(**attribs)
       end
     end
-
-    # for now we just can just use one schema
-    def age_graph = 'age_schema'
-    def persisted? = id.present?
-    def age_label = self.class.name.split('::').last
-    def to_s = ":#{age_label} #{properties_to_s}"
 
     def to_h
       base_h = attributes.to_hash
@@ -112,23 +114,6 @@ module ApacheAge
       # json_data = age_result.to_a.first.values.first.split("::#{age_type}").first
 
       JSON.parse(json_data)
-    end
-
-    # can we update edge nodes? or just properties?
-    # So far just properties of string type with '' around them
-    def update_sql
-      alias_name = age_alias || age_label.downcase
-      set_caluse =
-        age_properties.map { |k, v| v ? "#{alias_name}.#{k} = '#{v}'" : "#{alias_name}.#{k} = NULL" }.join(', ')
-      <<-SQL
-        SELECT *
-        FROM cypher('#{age_graph}', $$
-            MATCH (#{alias_name}:#{age_label})
-            WHERE id(#{alias_name}) = #{id}
-            SET #{set_caluse}
-            RETURN #{alias_name}
-        $$) as (#{age_label} agtype);
-      SQL
     end
   end
 end

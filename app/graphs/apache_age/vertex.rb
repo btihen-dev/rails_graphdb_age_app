@@ -31,5 +31,21 @@ module ApacheAge
         $$) as (#{age_label} agtype);
       SQL
     end
+
+    # So far just properties of string type with '' around them
+    def update_sql
+      alias_name = age_alias || age_label.downcase
+      set_caluse =
+        age_properties.map { |k, v| v ? "#{alias_name}.#{k} = '#{v}'" : "#{alias_name}.#{k} = NULL" }.join(', ')
+      <<-SQL
+        SELECT *
+        FROM cypher('#{age_graph}', $$
+            MATCH (#{alias_name}:#{age_label})
+            WHERE id(#{alias_name}) = #{id}
+            SET #{set_caluse}
+            RETURN #{alias_name}
+        $$) as (#{age_label} agtype);
+      SQL
+    end
   end
 end

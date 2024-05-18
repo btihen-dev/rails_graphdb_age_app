@@ -35,11 +35,27 @@ module ApacheAge
       <<-SQL
         SELECT *
         FROM cypher('#{age_graph}', $$
-            MATCH (start:#{start_node.age_label}), (end:#{end_node.age_label})
-            WHERE id(start) = #{start_node.id} and id(end) = #{end_node.id}
-            CREATE (start)-[edge#{self}]->(end)
+            MATCH (from_node:#{start_node.age_label}), (to_node:#{end_node.age_label})
+            WHERE id(from_node) = #{start_node.id} and id(to_node) = #{end_node.id}
+            CREATE (from_node)-[edge#{self}]->(to_node)
             RETURN edge
         $$) as (edge agtype);
+      SQL
+    end
+
+    # So far just properties of string type with '' around them
+    def update_sql
+      alias_name = age_alias || age_label.downcase
+      set_caluse =
+        age_properties.map { |k, v| v ? "#{alias_name}.#{k} = '#{v}'" : "#{alias_name}.#{k} = NULL" }.join(', ')
+      <<-SQL
+        SELECT *
+        FROM cypher('#{age_graph}', $$
+            MATCH [#{alias_name}:#{age_label}]
+            WHERE id(#{alias_name}) = #{id}
+            SET #{set_caluse}
+            RETURN #{alias_name}
+        $$) as (#{age_label} agtype);
       SQL
     end
   end
