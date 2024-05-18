@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Age::Edges::WorksAt do
+RSpec.describe Edges::WorksAt do
   describe '.new' do
     subject { described_class.new(**attributes) }
 
@@ -20,8 +20,8 @@ RSpec.describe Age::Edges::WorksAt do
       let(:attributes) { { employee_role: 'Quarry Worker', start_node: fred, end_node: quarry } }
 
       context 'when nodes are not persisted' do
-        let(:fred) { Age::Nodes::Person.new(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
-        let(:quarry) { Age::Nodes::Company.new(company_name: 'Rockport Quarry') }
+        let(:fred) { Nodes::Person.new(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
+        let(:quarry) { Nodes::Company.new(company_name: 'Rockport Quarry') }
 
         it { expect(subject).to be_valid }
         it { expect(subject.start_node.id).to be_blank }
@@ -42,8 +42,8 @@ RSpec.describe Age::Edges::WorksAt do
       end
 
       context 'when nodes are already persisted' do
-        let(:fred) { Age::Nodes::Person.create(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
-        let(:quarry) { Age::Nodes::Company.create(company_name: 'Rockport Quarry') }
+        let(:fred) { Nodes::Person.create(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
+        let(:quarry) { Nodes::Company.create(company_name: 'Rockport Quarry') }
 
         it { expect(subject).to be_valid }
         it { expect(subject.start_node.id).to be_present }
@@ -69,8 +69,8 @@ RSpec.describe Age::Edges::WorksAt do
       let(:attributes) { { employee_role: 'Quarry Worker', start_id: fred.id, end_id: quarry.id } }
 
       context 'when nodes are already persisted' do
-        let(:fred) { Age::Nodes::Person.create(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
-        let(:quarry) { Age::Nodes::Company.create(company_name: 'Rockport Quarry') }
+        let(:fred) { Nodes::Person.create(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
+        let(:quarry) { Nodes::Company.create(company_name: 'Rockport Quarry') }
 
         it { expect(subject).to be_valid }
         it { expect(subject.id).to be_blank }
@@ -104,8 +104,8 @@ RSpec.describe Age::Edges::WorksAt do
     let(:attributes) { { employee_role: 'Quarry Worker', start_node: fred, end_node: quarry } }
 
     context 'when nodes are not persisted' do
-      let(:fred) { Age::Nodes::Person.new(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
-      let(:quarry) { Age::Nodes::Company.new(company_name: 'Rockport Quarry') }
+      let(:fred) { Nodes::Person.new(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
+      let(:quarry) { Nodes::Company.new(company_name: 'Rockport Quarry') }
 
       it { expect(subject).to be_valid }
       it '' do
@@ -122,8 +122,8 @@ RSpec.describe Age::Edges::WorksAt do
     end
 
     context 'when nodes are persisted' do
-      let(:fred) { Age::Nodes::Person.create(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
-      let(:quarry) { Age::Nodes::Company.create(company_name: 'Rockport Quarry') }
+      let(:fred) { Nodes::Person.create(first_name: 'Fred', last_name: 'Flintstone', gender: 'male') }
+      let(:quarry) { Nodes::Company.create(company_name: 'Rockport Quarry') }
 
       it { expect(subject).to be_valid }
       it '' do

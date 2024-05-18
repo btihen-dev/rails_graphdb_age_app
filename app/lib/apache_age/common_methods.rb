@@ -60,10 +60,11 @@ module ApacheAge
                     .merge(hash['properties'])
                     .symbolize_keys
 
+      # TODO: fix so it works with or without the namespace!
       if age_type == 'vertex'
-        "Age::Nodes::#{hash['label']}".constantize.new(**attribs)
+        "Nodes::#{hash['label']}".constantize.new(**attribs)
       else
-        "Age::Edges::#{hash['label']}".constantize.new(**attribs)
+        "Edges::#{hash['label']}".constantize.new(**attribs)
       end
     end
 

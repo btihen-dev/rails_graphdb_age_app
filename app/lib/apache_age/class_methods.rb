@@ -1,8 +1,12 @@
 module ApacheAge
   module ClassMethods
+    # for now we only allow one predertimed graph
     def age_graph = 'age_schema'
-    def age_type = (name.split('::').second == 'Nodes' ? 'vertex' : 'edge')
+    # class name always represent the graph label
     def age_label = name.split('::').last
+    # the penultimate part of the name always represent the graph type
+    def age_type = (name.split('::')[-2] == 'Edges' ? 'edge' : 'vertex')
+
     def create(**attributes) = new(**attributes).save
 
     def find_by(attributes)
@@ -29,10 +33,11 @@ module ApacheAge
         json_string = result.first.split('::').first
         hash = JSON.parse(json_string)
         attribs = hash.except('label', 'properties').merge(hash['properties']).symbolize_keys
+        # TODO: fix so it works with or without the namespace!
         if age_type == 'vertex'
-          "Age::Nodes::#{hash['label']}".constantize.new(**attribs)
+          "Nodes::#{hash['label']}".constantize.new(**attribs)
         else
-          "Age::Edges::#{hash['label']}".constantize.new(**attribs)
+          "Edges::#{hash['label']}".constantize.new(**attribs)
         end
       end
     end
@@ -48,10 +53,11 @@ module ApacheAge
 
       hash = JSON.parse(json_data)
       attribs = hash.except('label', 'properties').merge(hash['properties']).symbolize_keys
+      # TODO: fix so it works with or without the namespace!
       if age_type == 'vertex'
-        "Age::Nodes::#{hash['label']}".constantize.new(**attribs)
+        "Nodes::#{hash['label']}".constantize.new(**attribs)
       else
-        "Age::Edges::#{hash['label']}".constantize.new(**attribs)
+        "Edges::#{hash['label']}".constantize.new(**attribs)
       end
     end
 

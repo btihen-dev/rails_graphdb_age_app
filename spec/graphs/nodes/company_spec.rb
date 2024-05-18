@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Age::Nodes::Company do
+RSpec.describe Nodes::Company do
   describe '.new' do
     subject { described_class.new(**attributes) }
 
