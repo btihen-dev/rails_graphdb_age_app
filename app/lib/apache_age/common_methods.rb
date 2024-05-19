@@ -6,15 +6,14 @@ module ApacheAge
 
       self.end_id ||= end_node.id if end_node
       self.start_id ||= start_node.id if start_node
-      self.end_node ||= ApacheAge::Entity.find(end_id) if end_id
-      self.start_node ||= ApacheAge::Entity.find(start_id) if start_id
+      self.end_node ||= Entity.find(end_id) if end_id
+      self.start_node ||= Entity.find(start_id) if start_id
     end
 
-    def persisted? = id.present?
     # for now we just can just use one schema
     def age_graph = 'age_schema'
+    def persisted? = id.present?
     def age_label = self.class.name.gsub('::', '__')
-    # def age_label = self.class.name.split('::').last
     def to_s = ":#{age_label} #{properties_to_s}"
 
     def update(attribs)

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ApacheAge::Edge do
-  context 'with required minimal namespacing' do
+  context 'with minimal namespacing' do
     let(:fred) { Nodes::CavePerson.new(name: 'Bamm-Bamm Rubble') }
     let(:wilma) { Nodes::CavePerson.create(name: 'Pebbles Flintstone') }
 

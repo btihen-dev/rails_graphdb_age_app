@@ -2,12 +2,8 @@ module ApacheAge
   module ClassMethods
     # for now we only allow one predertimed graph
     def age_graph = 'age_schema'
-    # class name always represent the graph label
     def age_label = name.gsub('::', '__')
-    # def age_label = name.split('::').last
-    # the penultimate part of the name always represent the graph type
-    def age_type = (name.split('::')[-2] == 'Edges' ? 'edge' : 'vertex')
-
+    def age_type = name.constantize.new.age_type
     def create(**attributes) = new(**attributes).save
 
     def find_by(attributes)
@@ -20,10 +16,6 @@ module ApacheAge
       where_clause = "id(find) = #{id}"
       cypher_sql = find_sql(where_clause)
       execute_find(cypher_sql)
-    end
-
-    def match_clause
-      age_type == 'vertex' ? "(find:#{age_label})" : "()-[find:#{age_label}]->()"
     end
 
     def all
@@ -40,6 +32,10 @@ module ApacheAge
     end
 
     # Private stuff
+
+    def match_clause
+      age_type == 'vertex' ? "(find:#{age_label})" : "()-[find:#{age_label}]->()"
+    end
 
     def execute_find(cypher_sql)
       age_result = ActiveRecord::Base.connection.execute(cypher_sql)
