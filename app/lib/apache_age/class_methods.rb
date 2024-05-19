@@ -33,12 +33,8 @@ module ApacheAge
         json_string = result.first.split('::').first
         hash = JSON.parse(json_string)
         attribs = hash.except('label', 'properties').merge(hash['properties']).symbolize_keys
-        # TODO: fix so it works with or without the namespace!
-        if age_type == 'vertex'
-          "Nodes::#{hash['label']}".constantize.new(**attribs)
-        else
-          "Edges::#{hash['label']}".constantize.new(**attribs)
-        end
+
+        new(**attribs)
       end
     end
 
@@ -53,12 +49,8 @@ module ApacheAge
 
       hash = JSON.parse(json_data)
       attribs = hash.except('label', 'properties').merge(hash['properties']).symbolize_keys
-      # TODO: fix so it works with or without the namespace!
-      if age_type == 'vertex'
-        "Nodes::#{hash['label']}".constantize.new(**attribs)
-      else
-        "Edges::#{hash['label']}".constantize.new(**attribs)
-      end
+
+      new(**attribs)
     end
 
     def all_sql

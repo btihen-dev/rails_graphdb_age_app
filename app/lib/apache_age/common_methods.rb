@@ -23,16 +23,17 @@ module ApacheAge
     end
 
     def save
-      response_hash = id.present? ? execute_sql(update_sql) : execute_sql(create_sql)
+      cypher_sql = (persisted? ? update_sql : create_sql)
+      response_hash = execute_sql(cypher_sql)
 
       self.id = response_hash['id']
 
       if age_type == 'edge'
         self.end_id = response_hash['end_id']
         self.start_id = response_hash['start_id']
-        # reload the nodes?
-        # self.end_node = Age::Nodes.find(end_id)
-        # self.start_node = Age::Nodes.find(start_id)
+        # reload the nodes? (can we change the nodes?)
+        # self.end_node = ApacheAge::Entity.find(end_id)
+        # self.start_node = ApacheAge::Entity.find(start_id)
       end
 
       self
@@ -60,12 +61,7 @@ module ApacheAge
                     .merge(hash['properties'])
                     .symbolize_keys
 
-      # TODO: fix so it works with or without the namespace!
-      if age_type == 'vertex'
-        "Nodes::#{hash['label']}".constantize.new(**attribs)
-      else
-        "Edges::#{hash['label']}".constantize.new(**attribs)
-      end
+      new(**attribs)
     end
 
     def to_h

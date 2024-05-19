@@ -53,7 +53,7 @@ module ApacheAge
       <<-SQL
         SELECT *
         FROM cypher('#{age_graph}', $$
-            MATCH [#{alias_name}:#{age_label}]
+            MATCH ()-[#{alias_name}:#{age_label}]->()
             WHERE id(#{alias_name}) = #{id}
             SET #{set_caluse}
             RETURN #{alias_name}
