@@ -41,17 +41,15 @@ module ApacheAge
 
       def instantiate_result(age_response)
         age_type = age_response.values.first.first.split('::').last
-        json_data = age_response.values.first.first.split('::').first
+        json_string = age_response.values.first.first.split('::').first
+        json_data = JSON.parse(json_string)
 
-        hash = JSON.parse(json_data)
-        attribs = hash.except('label', 'properties').merge(hash['properties']).symbolize_keys
+        age_label = json_data['label']
+        attribs = json_data.except('label', 'properties')
+                           .merge(json_data['properties'])
+                           .symbolize_keys
 
-        # TODO: fix so it works with or without the namespace!
-        if age_type == 'vertex'
-          "Nodes::#{hash['label']}".constantize.new(**attribs)
-        else
-          "Edges::#{hash['label']}".constantize.new(**attribs)
-        end
+        "#{json_data['label'].gsub('__', '::')}".constantize.new(**attribs)
       end
 
       def find_sql(match_clause, where_clause)

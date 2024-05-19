@@ -3,7 +3,8 @@ module ApacheAge
     # for now we only allow one predertimed graph
     def age_graph = 'age_schema'
     # class name always represent the graph label
-    def age_label = name.split('::').last
+    def age_label = name.gsub('::', '__')
+    # def age_label = name.split('::').last
     # the penultimate part of the name always represent the graph type
     def age_type = (name.split('::')[-2] == 'Edges' ? 'edge' : 'vertex')
 

@@ -13,7 +13,8 @@ module ApacheAge
     def persisted? = id.present?
     # for now we just can just use one schema
     def age_graph = 'age_schema'
-    def age_label = self.class.name.split('::').last
+    def age_label = self.class.name.gsub('::', '__')
+    # def age_label = self.class.name.split('::').last
     def to_s = ":#{age_label} #{properties_to_s}"
 
     def update(attribs)
