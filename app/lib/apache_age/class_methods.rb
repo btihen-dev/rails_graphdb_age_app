@@ -1,10 +1,7 @@
 module ApacheAge
   module ClassMethods
     # for now we only allow one predertimed graph
-    def age_graph = 'age_schema'
-    def age_label = name.gsub('::', '__')
-    def age_type = name.constantize.new.age_type
-    def create(**attributes) = new(**attributes).save
+    def create(attributes) = new(**attributes).save
 
     def find_by(attributes)
       where_clause = attributes.map { |k, v| "find.#{k} = '#{v}'" }.join(' AND ')
@@ -32,6 +29,10 @@ module ApacheAge
     end
 
     # Private stuff
+
+    def age_graph = 'age_schema'
+    def age_label = name.gsub('::', '__')
+    def age_type = name.constantize.new.age_type
 
     def match_clause
       age_type == 'vertex' ? "(find:#{age_label})" : "()-[find:#{age_label}]->()"
