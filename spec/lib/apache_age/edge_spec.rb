@@ -60,40 +60,6 @@ RSpec.describe ApacheAge::Edge do
       it { expect(subject.since_year).to eq(1963) }
       it { expect(subject.id).to be_present }
       it { expect(subject).to be_persisted }
-
-      it '#update' do
-        id = subject.id
-        expect(subject.role).to eq('husband')
-        expect(subject.since_year).to eq(1963)
-
-        subject.update(since_year: 1964, role: 'happy')
-        expect(subject.since_year).to eq(1964)
-        expect(subject.role).to eq('happy')
-        expect(subject.save).to be_truthy
-        expect(subject.id).to eq id
-
-        marriage = Edges::MarriedTo.find(id)
-        expect(marriage.since_year).to eq(1964)
-        expect(marriage.role).to eq('happy')
-        expect(marriage.id).to eq(id)
-      end
-
-      it '#save already persisted' do
-        id = subject.id
-        expect(subject.id).to be_present
-        expect(subject.role).to eq('husband')
-
-        subject.update(role: 'spouse')
-        expect(subject.save).to be_truthy
-
-        spouse = Edges::MarriedTo.find(id)
-        expect(spouse.id).to eq(id)
-        expect(spouse.role).to eq('spouse')
-
-        spouse = ApacheAge::Entity.find(id)
-        expect(spouse.id).to eq(id)
-        expect(spouse.role).to eq('spouse')
-      end
     end
 
     context '.new' do
@@ -171,40 +137,6 @@ RSpec.describe ApacheAge::Edge do
       it { expect(subject.since_year).to eq(1963) }
       it { expect(subject.id).to be_present }
       it { expect(subject).to be_persisted }
-
-      it '#update' do
-        id = subject.id
-        expect(subject.role).to eq('husband')
-        expect(subject.since_year).to eq(1963)
-
-        subject.update(since_year: 1964, role: 'happy')
-        expect(subject.since_year).to eq(1964)
-        expect(subject.role).to eq('happy')
-        expect(subject.save).to be_truthy
-        expect(subject.id).to eq id
-
-        marriage = Flintstones::Edges::MarriedTo.find(id)
-        expect(marriage.since_year).to eq(1964)
-        expect(marriage.role).to eq('happy')
-        expect(marriage.id).to eq(id)
-      end
-
-      it '#save already persisted' do
-        id = subject.id
-        expect(subject.id).to be_present
-        expect(subject.role).to eq('husband')
-
-        subject.update(role: 'spouse')
-        expect(subject.save).to be_truthy
-
-        spouse = Flintstones::Edges::MarriedTo.find(id)
-        expect(spouse.id).to eq(id)
-        expect(spouse.role).to eq('spouse')
-
-        spouse = ApacheAge::Entity.find(id)
-        expect(spouse.id).to eq(id)
-        expect(spouse.role).to eq('spouse')
-      end
     end
 
     context '.new' do

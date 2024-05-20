@@ -12,9 +12,20 @@ module ApacheAge
 
     # for now we just can just use one schema
     def age_graph = 'age_schema'
-    def persisted? = id.present?
     def age_label = self.class.name.gsub('::', '__')
+    def persisted? = id.present?
     def to_s = ":#{age_label} #{properties_to_s}"
+
+    def to_h
+      base_h = attributes.to_hash
+      if age_type == 'edge'
+        # remove the nodes (in attribute form and re-add in hash form)
+        base_h = base_h.except('start_node', 'end_node')
+        base_h[:end_node] = end_node.to_h if end_node
+        base_h[:start_node] = start_node.to_h if start_node
+      end
+      base_h.symbolize_keys
+    end
 
     def update(attribs)
       attribs.except(id:).each do |key, value|
@@ -40,15 +51,14 @@ module ApacheAge
     end
 
     def destroy
-      match_clause = (age_type == 'vertex' ? "(done:#{age_label})" : "[done:#{age_label}]")
-      where_clause = (age_type == 'vertex' ? "id(done) = #{id}" : "id[done] = #{id}")
+      match_clause = (age_type == 'vertex' ? "(done:#{age_label})" : "()-[done:#{age_label}]->()")
       delete_clause = (age_type == 'vertex' ? 'DETACH DELETE done' : 'DELETE done')
       cypher_sql =
         <<-SQL
         SELECT *
         FROM cypher('#{age_graph}', $$
             MATCH #{match_clause}
-            WHERE #{where_clause}
+            WHERE id(done) = #{id}
  	          #{delete_clause}
             return done
         $$) as (deleted agtype);
@@ -57,22 +67,11 @@ module ApacheAge
       hash = execute_sql(cypher_sql)
       return nil if hash.blank?
 
-      attribs = hash.except('id', 'label', 'properties')
-                    .merge(hash['properties'])
-                    .symbolize_keys
-
-      new(**attribs)
+      self.id = nil
+      self
     end
 
-    def to_h
-      base_h = attributes.to_hash
-      if age_type == 'edge'
-        base_h = base_h.except('start_node', 'end_node')
-        base_h['start_node'] = start_node.to_h
-        base_h['end_node'] = end_node.to_h
-      end
-      base_h.with_indifferent_access
-    end
+    # private
 
     def age_properties
       attrs = attributes.except('id')

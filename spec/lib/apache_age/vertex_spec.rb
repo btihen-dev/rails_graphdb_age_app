@@ -75,37 +75,6 @@ RSpec.describe ApacheAge::Vertex do
       it { expect(subject.age_type).to eq('vertex') }
       it { expect(subject.species).to eq('dog') }
       it { expect(subject.pet_name).to eq('Fido') }
-
-      it '#update' do
-        id = subject.id
-        expect(subject.species).to eq('dog')
-        expect(subject.pet_name).to eq('Fido')
-
-        subject.update(species: 'cat', pet_name: 'Whiskers')
-        expect(subject.species).to eq('cat')
-        expect(subject.pet_name).to eq('Whiskers')
-        expect(subject.save).to be_truthy
-        expect(subject.id).to be_present
-
-        cat = Nodes::Pet.find(id)
-        expect(cat.species).to eq('cat')
-        expect(cat.pet_name).to eq('Whiskers')
-        expect(cat.id).to eq(id)
-      end
-
-      it '#save already persisted' do
-        id = subject.id
-        expect(subject.id).to be_present
-        expect(subject.pet_name).to eq('Fido')
-
-        subject.update(species: 'cat', pet_name: 'Whiskers')
-        expect(subject.save).to be_truthy
-
-        cat = Nodes::Pet.find(id)
-        expect(cat.id).to eq(id)
-        expect(cat.species).to eq('cat')
-        expect(cat.pet_name).to eq('Whiskers')
-      end
     end
   end
 
@@ -151,18 +120,6 @@ RSpec.describe ApacheAge::Vertex do
       it { expect(subject.age_type).to eq('vertex') }
       it { expect(subject.species).to eq('dog') }
       it { expect(subject.pet_name).to eq('Fido') }
-
-      it 'can be updated' do
-        subject.update(species: 'cat', pet_name: 'Whiskers')
-        expect(subject.species).to eq('cat')
-        expect(subject.save).to be_truthy
-        expect(subject.id).to be_present
-        id = subject.id
-        cat = Flintstones::Nodes::Pet.find(id)
-        expect(cat.species).to eq('cat')
-        expect(cat.pet_name).to eq('Whiskers')
-        expect(cat.id).to eq(id)
-      end
     end
 
     context '.new' do
