@@ -27,13 +27,20 @@ module ApacheAge
       base_h.symbolize_keys
     end
 
-    def update(attribs)
+    def update_attributes(attribs)
       attribs.except(id:).each do |key, value|
         send("#{key}=", value) if respond_to?("#{key}=")
       end
     end
 
+    def update(attribs)
+      update_attributes(attribs)
+      save
+    end
+
     def save
+      return false unless valid?
+
       cypher_sql = (persisted? ? update_sql : create_sql)
       response_hash = execute_sql(cypher_sql)
 
@@ -70,6 +77,8 @@ module ApacheAge
       self.id = nil
       self
     end
+    alias destroy! destroy
+    alias delete destroy
 
     # private
 
