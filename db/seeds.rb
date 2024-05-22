@@ -17,17 +17,17 @@ jed = Nodes::Person.new(first_name: 'Jed', last_name: 'Flintstone', gender: 'mal
 
 # soldier / pilot
 rocky = Nodes::Person.new(first_name: 'Rockbottom', nick_name: 'Rocky', last_name: 'Flintstone',
-                               gender: 'male').save
+                          gender: 'male').save
 
 # rich uncle
 giggles = Nodes::Person.new(first_name: 'Jay Giggles', nick_name: 'Uncle Giggles', last_name: 'Flintstone',
-                                 gender: 'male').save
+                            gender: 'male').save
 
 # freeway traffic reporter
 pops = Nodes::Person.new(first_name: 'Ed Pops', nick_name: 'Pops', last_name: 'Flintstone', gender: 'male').save
 # homemaker
 edna = Nodes::Person.new(first_name: 'Edna', last_name: 'Flintstone', given_name: 'Hardrock',
-                              gender: 'female').save
+                         gender: 'female').save
 
 # married to wilma
 # son of pops & edna (crane operator at 'Slate Rock & Gravel Company').save
@@ -36,12 +36,12 @@ fred = Nodes::Person.create(first_name: 'Fredrick Jay', nick_name: 'Fred', last_
 # married to fred
 # reporter & caterer & homemaker
 wilma = Nodes::Person.new(first_name: 'Wilma', last_name: 'Flintstone', given_name: 'Slaghoople',
-                               gender: 'female').save
+                          gender: 'female').save
 
 # daughter of fred & wilma, married to bamm-bamm
 # advertising executive
 pebbles = Nodes::Person.new(first_name: 'Pebbles Wilma', nick_name: 'Pebbles', last_name: 'Rubble',
-                                 given_name: 'Flintstone', gender: 'female').save
+                            given_name: 'Flintstone', gender: 'female').save
 # adopted brother to pebbles
 stoney = Nodes::Person.new(first_name: 'Stoney', last_name: 'Flintstone', gender: 'male').save
 
@@ -50,7 +50,7 @@ stoney = Nodes::Person.new(first_name: 'Stoney', last_name: 'Flintstone', gender
 james = Nodes::Person.new(first_name: 'James', last_name: 'Hardrock', gender: 'male').save
 # mother to Edna, Tex, Jemina (married to James)
 lucile = Nodes::Person.new(first_name: 'Lucile', last_name: 'Hardrock', given_name: 'von Stone',
-                                gender: 'female').save
+                           gender: 'female').save
 
 # sister to Tex & Edna
 jemina = Nodes::Person.new(first_name: 'Jemina', last_name: 'Hardrock', gender: 'female').save
@@ -73,7 +73,7 @@ pearl = Nodes::Person.new(first_name: 'Pearl', last_name: 'Slaghoople', gender: 
 mica = Nodes::Person.new(first_name: 'Mica', last_name: 'Slaghoople', gender: 'female').save
 # wilma's sister
 mickey = Nodes::Person.new(first_name: 'Michael', nick_name: 'Mickey', last_name: 'Slaghoople',
-                                gender: 'female').save
+                           gender: 'female').save
 # wilma's brother
 michael = Nodes::Person.new(first_name: 'Jerry', last_name: 'Slaghoople', gender: 'male').save
 
@@ -105,7 +105,7 @@ eddie = Nodes::Person.new(first_name: 'Edward', nick_name: 'Eddie', last_name: '
 bob = Nodes::Person.new(first_name: 'Robert', nick_name: 'Bob', last_name: 'Rubble', gender: 'male').save
 # married to bob (homemaker)
 flo = Nodes::Person.new(first_name: 'Florence', nick_name: 'Flo', last_name: 'Rubble', given_name: 'Slate',
-                             gender: 'female').save
+                        gender: 'female').save
 
 # barney's brother (younger)
 dusty = Nodes::Person.new(first_name: 'Dusty', last_name: 'Rubble', gender: 'male').save
@@ -113,21 +113,21 @@ dusty = Nodes::Person.new(first_name: 'Dusty', last_name: 'Rubble', gender: 'mal
 # married to betty (child of bob & flo)
 # police officer & crane operator at 'Slate Rock & Gravel Company'
 barney = Nodes::Person.new(first_name: 'Bernard Matthew', nick_name: 'Barney', last_name: 'Rubble',
-                                gender: 'male').save
+                           gender: 'male').save
 # married to barney, child of brick & jean
 # reporter & caterer & homemaker
 betty = Nodes::Person.new(first_name: 'Elizabeth Jean', nick_name: 'Betty', last_name: 'Rubble',
-                               given_name: 'McBricker', gender: 'female').save
+                          given_name: 'McBricker', gender: 'female').save
 
 # adopted son of barney & betty (married to pebbles)
 # auto mechanic, then screenwriter
 bamm = Nodes::Person.new(first_name: 'Bamm-Bamm', last_name: 'Rubble', gender: 'male').save
 # son of bamm-bamm & pebbles
 chip = Nodes::Person.new(first_name: 'Charleston Frederick', nick_name: 'Chip', last_name: 'Rubble',
-                              gender: 'male').save
+                         gender: 'male').save
 # daughter of bamm-bamm & pebbles
 roxy = Nodes::Person.new(first_name: 'Roxann Elisabeth', nick_name: 'Roxy', last_name: 'Rubble',
-                              gender: 'female').save
+                         gender: 'female').save
 
 ## The Gruesomes – A creepy but friendly family, who move in next door to the Flintstones in later seasons.
 # Uncle Ghastly – The uncle of Gobby from Creepella's side of the family, who is mostly shown as a large furry hand with claws emerging from a door, a well, or a wall. His shadow was also seen in their debut episode. He wasn't named until his second appearance, which is also the only time he is heard speaking, as he is heard laughing from a well.
@@ -183,21 +183,20 @@ hoppy = Nodes::Pet.new(species: 'kanga', pet_name: 'Hoppy', gender: 'male').save
 ## Companies
 ############
 san_cemente = Nodes::Company.create(company_name: 'San Cemente')
-# san_cemente = Nodes::Company.new(company_name: 'San Cemente').save
-bedrock_news = Nodes::Company.new(company_name: 'Bedrock Daily News').save
-bedrock_police = Nodes::Company.new(company_name: 'Bedrock Police Department').save
-bedrock_fire = Nodes::Company.new(company_name: 'Bedrock Fire Department').save
-bedrock_quarry = Nodes::Company.new(company_name: 'Bedrock Quarry Company').save
-betty_wilma_catering = Nodes::Company.new(company_name: 'Betty & Wilma Catering').save
-texrock_ranch = Nodes::Company.new(company_name: 'Texrock Ranch').save
-teradactyl = Nodes::Company.new(company_name: 'Teradactyl Flights').save
-auto_repair = Nodes::Company.new(company_name: 'Bedrock Auto Repair').save
-used_cars = Nodes::Company.new(company_name: 'Bedrock Used Cars').save
-bedrock_entetainment = Nodes::Company.new(company_name: 'Bedrock Entertainment').save
-bedrock_army = Nodes::Company.new(company_name: 'Bedrock Army').save
-independent = Nodes::Company.new(company_name: 'Independent').save
-advertising = Nodes::Company.new(company_name: 'Bedrock Advertising').save
-buffalo_lodge = Nodes::Company.new(company_name: 'Water Buffalo Lodge').save
+bedrock_news = Nodes::Company.create(company_name: 'Bedrock Daily News')
+bedrock_police = Nodes::Company.create(company_name: 'Bedrock Police Department')
+bedrock_fire = Nodes::Company.create(company_name: 'Bedrock Fire Department')
+bedrock_quarry = Nodes::Company.create(company_name: 'Bedrock Quarry Company')
+betty_wilma_catering = Nodes::Company.create(company_name: 'Betty & Wilma Catering')
+texrock_ranch = Nodes::Company.create(company_name: 'Texrock Ranch')
+teradactyl = Nodes::Company.create(company_name: 'Teradactyl Flights')
+auto_repair = Nodes::Company.create(company_name: 'Bedrock Auto Repair')
+used_cars = Nodes::Company.create(company_name: 'Bedrock Used Cars')
+bedrock_entetainment = Nodes::Company.create(company_name: 'Bedrock Entertainment')
+bedrock_army = Nodes::Company.create(company_name: 'Bedrock Army')
+independent = Nodes::Company.create(company_name: 'Independent')
+advertising = Nodes::Company.create(company_name: 'Bedrock Advertising')
+buffalo_lodge = Nodes::Company.create(company_name: 'Water Buffalo Lodge')
 
 ## Jobs
 #######

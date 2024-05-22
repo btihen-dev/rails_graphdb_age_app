@@ -1,4 +1,7 @@
 ActiveRecord::Schema[7.1].define(version: 20_240_505_183_043) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension 'plpgsql'
+
   # Allow age extension
   execute('CREATE EXTENSION IF NOT EXISTS age;')
 

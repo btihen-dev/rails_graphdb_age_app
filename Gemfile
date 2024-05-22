@@ -72,3 +72,7 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
+# gem 'rails_age'
+# gem 'rails_age', path: '../rails_age'
+# gem 'rails_age', git: 'https://github.com/marpori/rails_age.git'
